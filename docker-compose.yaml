@@ -1,0 +1,35 @@
+# Docker Compose Configuration
+# visit https://docs.docker.com/compose/
+
+version: '3.8'
+services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+    - ts-ddd_pgdata:/var/lib/postgresql/data
+  # app service for your backend
+  app:
+    container_name: api-user
+    env_file:
+      - '.env'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
+    
+    depends_on:
+      - database
+volumes:
+  ts-ddd_pgdata:
+    external: true
