@@ -9,7 +9,6 @@ export class CustomerAdapter implements CustomerRepositoryPort {
   constructor() {}
 
   public async create(customer: Customer): Promise<Customer> {
-    customer.id = crypto.randomUUID();
     const customerEntity = CustomerFactory.domainToEntity(customer);
     this.customers.set(customerEntity.uuid, customerEntity);
     return new Promise((resolve, reject) => {

@@ -20,6 +20,7 @@ export class Customer {
   }
 
   static create(params: CustomerParams) {
+    if (!params.id) params.id = crypto.randomUUID();
     Logger.debug('Apply validation', 'Customer');
     return new Customer(params);
   }
