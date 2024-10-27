@@ -21,7 +21,8 @@
       "@customers/presentation/*": ["src/customers/presentation/*"],
       "@customers/use-cases/*": ["src/customers/use-cases/*"],
       "@customers/infrastructure/*": ["src/customers/infrastructure/*"],
-      "@customers-domain/*": ["src/domain/customers/*"]
+      "@customers-domain/*": ["src/domain/customers/*"],
+      "@shared-domain/*": ["src/domain/shared/*"]
     }
   }
 }

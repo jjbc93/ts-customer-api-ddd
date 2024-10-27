@@ -33,10 +33,10 @@ export class GetCustomersUseCase {
   private buildModel(customers: Customer[]): CustomerResponseModel[] {
     const response = customers?.map((customer) => {
       return {
-        id: customer.id,
-        name: customer.name,
-        lastName: customer.lastName,
-        email: customer.email,
+        id: customer.id.getValue(),
+        name: customer.name.getValue(),
+        lastName: customer.lastName.getValue(),
+        email: customer.email.getValue(),
         fullName: customer.getFullName(),
       };
     });

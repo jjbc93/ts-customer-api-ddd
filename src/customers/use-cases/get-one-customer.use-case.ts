@@ -39,10 +39,10 @@ export class GetOneCustomerUseCase {
 
   private buildModel(customer: Customer): CustomerResponseModel {
     return {
-      id: customer.id,
-      name: customer.name,
-      lastName: customer.lastName,
-      email: customer.email,
+      id: customer.id.getValue(),
+      name: customer.name.getValue(),
+      lastName: customer.lastName.getValue(),
+      email: customer.email.getValue(),
       fullName: customer.getFullName(),
     };
   }

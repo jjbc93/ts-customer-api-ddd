@@ -1,16 +1,20 @@
 import { Logger } from '@nestjs/common';
+import { CustomerId } from './value-object/customer-id';
+import { CustomerName } from './value-object/customer-name';
+import { CustomerEmail } from './value-object/customer-email';
+import { CustomerLastName } from './value-object/customer-lastname';
 
-interface CustomerParams {
-  id?: string;
-  name: string;
-  email: string;
-  lastName: string;
+export interface CustomerParams {
+  id: CustomerId;
+  name: CustomerName;
+  email: CustomerEmail;
+  lastName: CustomerLastName;
 }
 export class Customer {
-  id: string;
-  name: string;
-  email: string;
-  lastName: string;
+  id: CustomerId;
+  name: CustomerName;
+  email: CustomerEmail;
+  lastName: CustomerLastName;
 
   private constructor(params: CustomerParams) {
     this.id = params.id;
@@ -20,9 +24,7 @@ export class Customer {
   }
 
   static create(params: CustomerParams) {
-    //? Task use-case create
-    if (!params.id) params.id = crypto.randomUUID();
-    Logger.debug('Apply validation', 'Customer');
+    Logger.warn('Apply validation', 'Customer');
     return new Customer(params);
   }
 
