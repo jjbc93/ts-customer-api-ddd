@@ -1,7 +1,8 @@
 import { Customer } from '@customers-domain/customer';
 import { CustomerRepositoryPort } from '@customers-domain/repository/customer.repository';
-import { CustomerFactory } from '@customers/infrastructure/storage/customer.factory';
 import { Inject, Injectable } from '@nestjs/common';
+import { CustomerExistService } from './services/customer-exist.service';
+import { CustomerAlreadyRegisteredException } from './errors/customer-already-registered.error';
 
 export type CustomerCreateUseCaseRequestModel = {
   name: string;
@@ -24,15 +25,22 @@ type CustomerCreateUseCaseRepository = Pick<CustomerRepositoryPort, 'create'>;
 
 @Injectable()
 export class CustomerCreateUseCase {
+  public getCustomerSerivice: CustomerRepositoryPort;
   constructor(
     @Inject(CustomerRepositoryPort)
-    private readonly customerRepositoryPort: CustomerCreateUseCaseRepository,
+    private readonly customerRepositoryPort: CustomerRepositoryPort,
+    private readonly customerExist: CustomerExistService,
   ) {}
   public async exec(
     request: CustomerCreateUseCaseRequestModel,
   ): Promise<CustomerCreateUseCaseResponseModel> {
+    /* const role = servicioDomainCreateRole: role
+    newCustomer.ADDrOLE(role); */
+    const idCustomer = crypto.randomUUID();
+    const customerExist = await this.customerExist.exec(idCustomer);
+    if (customerExist) throw new CustomerAlreadyRegisteredException();
     const newCustomer = await this.customerRepositoryPort.create(
-      Customer.create({ ...request }),
+      Customer.create({ ...request, id: idCustomer }),
     );
     return this.buildModel(newCustomer);
   }

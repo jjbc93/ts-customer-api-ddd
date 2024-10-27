@@ -4,6 +4,7 @@ import { CustomerOrmNotFoundException } from '@customers/infrastructure/storage/
 import { Inject, Injectable } from '@nestjs/common';
 import { CustomerNotFoundException } from './errors/customer-not-found.error';
 import { CustomerUnexpectedException } from './errors/customer-unexpected.error';
+import { GetCustomerService } from './services/get-customer.service';
 
 export type GetOneCustomerUseCaseRequestModel = {
   id: string;
@@ -27,25 +28,12 @@ type GetOneCustomerUseCaseRepository = Pick<CustomerRepositoryPort, 'findOne'>;
 
 @Injectable()
 export class GetOneCustomerUseCase {
-  constructor(
-    @Inject(CustomerRepositoryPort)
-    private readonly customerRepository: GetOneCustomerUseCaseRepository,
-  ) {}
+  constructor(private readonly getCustomerService: GetCustomerService) {}
 
   async exec(
     request: GetOneCustomerUseCaseRequestModel,
   ): Promise<GetOneCustomerUseCaseResponseModel> {
-    let customer;
-    try {
-      customer = await this.customerRepository.findOne(request.id);
-    } catch (error) {
-      if (error instanceof CustomerOrmNotFoundException) {
-        throw new CustomerNotFoundException();
-      }
-
-      throw new CustomerUnexpectedException();
-    }
-
+    const customer = await this.getCustomerService.getCustomer(request.id);
     return { customer: this.buildModel(customer) };
   }
 

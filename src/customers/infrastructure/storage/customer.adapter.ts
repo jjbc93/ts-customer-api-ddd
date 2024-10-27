@@ -31,7 +31,7 @@ export class CustomerAdapter implements CustomerRepositoryPort {
 
   public async findOne(id: string): Promise<Customer> {
     const customerEntity = this.customers.get(id);
-    if (!customerEntity) throw new CustomerOrmNotFoundException();
+    if (!customerEntity) return null;
     return CustomerFactory.entityToDomain(customerEntity);
   }
 }
