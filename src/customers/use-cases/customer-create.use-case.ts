@@ -38,8 +38,6 @@ export class CustomerCreateUseCase {
   public async exec(
     request: CustomerCreateUseCaseRequestModel,
   ): Promise<CustomerCreateUseCaseResponseModel> {
-    /* const role = servicioDomainCreateRole: role
-    newCustomer.ADDrOLE(role); */
     const idCustomer = crypto.randomUUID();
     const customerExist = await this.customerExist.exec(idCustomer);
     if (customerExist) throw new CustomerAlreadyRegisteredException();
